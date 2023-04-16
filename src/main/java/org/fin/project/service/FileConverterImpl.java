@@ -10,7 +10,6 @@ public class FileConverterImpl implements FileConverter {
     public FileDto toDto(FileEntity fileEntity) {
         return null;
     }
-
     @Override
     public FileEntity fromDto(FileDto fileDto) {
         return null;

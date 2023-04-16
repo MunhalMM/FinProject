@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class FileRouteBuilder extends RouteBuilder {
     @Value("${finProject.path}")
     private String pathToFile;
-
     @Override
     public void configure() throws Exception {
         String url = "activemq:queue:FILE.OUTPUT";
