@@ -4,8 +4,8 @@ import org.fin.project.entity.User;
 import org.fin.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,40 +21,42 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> getUser(@PathVariable(name = "id") int id) {
         try {
-            return userService.getUser(id);
+            return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
         } catch (IllegalArgumentException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(exception.getLocalizedMessage());
         }
 
     }
+
     @PostMapping
-    public User create(@RequestBody User user) {
+    public ResponseEntity<?> create(@RequestBody User user) {
         try {
-            return userService.create(user);
+            return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
         } catch (IllegalArgumentException exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(exception.getLocalizedMessage());
         }
 
     }
 
     @PutMapping
-    public User update(@RequestBody User user) {
+    public ResponseEntity<?> update(@RequestBody User user) {
         try {
-            return userService.update(user);
+            return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
         } catch (IllegalArgumentException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, exception.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(exception.getLocalizedMessage());
         }
 
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
         try {
             userService.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getLocalizedMessage());
         }
     }
 }
